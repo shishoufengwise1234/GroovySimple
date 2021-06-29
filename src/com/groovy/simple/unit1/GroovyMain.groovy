@@ -1,27 +1,31 @@
 package com.groovy.simple.unit1
 
+import com.sun.tools.classfile.Dependencies
+
 class GroovyMain {
 
 
     static void main(String[] args) {
 
-        GroovyTestInterface testInterface = new GroovyTestClass()
-        println(testInterface.getInterfaceName())
+//        GroovyTestInterface testInterface = new GroovyTestClass()
+//        println(testInterface.getInterfaceName())
+//
+//        def r = testMethod(1, "张三")
+//        def r2 = testMethod(false,0.3f)
+//
+//        println(r)
+//        println(r2)
+//
+//        def r3 = testNoResultMethod(false,-0.3f)
+//        println(r3)
+//
+//        testStringMethod()
+//
+//        testDataMethod()
+//
+//        testCollectionMethod()
 
-        def r = testMethod(1, "张三")
-        def r2 = testMethod(false,0.3f)
-
-        println(r)
-        println(r2)
-
-        def r3 = testNoResultMethod(false,-0.3f)
-        println(r3)
-
-        testStringMethod()
-
-        testDataMethod()
-
-        testCollectionMethod()
+        testClosureMethod()
 
     }
 
@@ -90,8 +94,59 @@ class GroovyMain {
             println(i)
         }
 
-
-
-
     }
+
+    //闭包
+    static void testClosureMethod() {
+
+        def closure = {
+            String param,int args ->{
+                println(param + " "+ args)
+            }
+                return param + " : "+args
+        }
+        def a = closure("张三",1)
+        closure.call("李四",3)
+
+        println(a)
+
+        //it 为闭包内置参数
+        def closureNoParam = {
+            println(" it =  $it")
+        }
+        closureNoParam("args")
+
+        //如果 -> 左边为空 则没有参数，it 也不存在
+        def closureNon = {
+            -> println("text ")
+        }
+
+        closureNon()
+
+        def list = ["text"]
+
+        list.each {
+            println(it)
+        }
+
+        //闭包调用方式
+        text(1,"2",{
+            println it
+        })
+        text 2,"3",{
+            println it
+        }
+        text(3,"4"){
+
+        }
+
+        Dependencies
+    }
+
+    //方法最后一个参数如果是闭包 则可以省略 （）
+    static def text(int i,String text,Closure closure){
+        def v = i + text
+        closure(v)
+    }
+
 }
